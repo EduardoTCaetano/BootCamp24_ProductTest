@@ -18,6 +18,7 @@ namespace BootCamp24_ProductTestXunit
                 throw new ArgumentException("Price must be greater than zero.");
             if (!new[] { "Electronics", "Books", "Pets" }.Contains(product.Category))
                 throw new ArgumentException("Invalid category.");
+            _products.Add(product);
             return product;
         }
     }

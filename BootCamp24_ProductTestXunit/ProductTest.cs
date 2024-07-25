@@ -13,7 +13,7 @@ namespace BootCamp24_ProductTestXunit
         }
 
         [Fact]
-        public void When_AddProductIsValid_ShouldReturnAddedProduct()
+        public void When_AddProductIsValid()
         {
             var product = new Product { Name = "Product", Price = 100, Category = "Electronics" };
             var addedProduct = _productContext.AddProduct(product);
@@ -28,21 +28,21 @@ namespace BootCamp24_ProductTestXunit
         public void When_AddProductPriceIsZero_ShouldThrowArgumentException()
         {
             var product = new Product { Name = "Product", Price = 0, Category = "Electronics" };
-            Assert.Throws<ArgumentException>(() => _productContext.AddProduct(product));
+            var exception = Assert.Throws<ArgumentException>(() => _productContext.AddProduct(product));
         }
 
         [Fact]
         public void When_AddProductPriceIsNegative_ShouldThrowArgumentException()
         {
             var product = new Product { Name = "Product", Price = -100, Category = "Electronics" };
-            Assert.Throws<ArgumentException>(() => _productContext.AddProduct(product));
+            var exception = Assert.Throws<ArgumentException>(() => _productContext.AddProduct(product));
         }
 
         [Fact]
         public void When_AddProductCategoryIsInvalid_ShouldThrowArgumentException()
         {
             var product = new Product { Name = "Product", Price = 100, Category = "InvalidCategory" };
-            Assert.Throws<ArgumentException>(() => _productContext.AddProduct(product));
+            var exception = Assert.Throws<ArgumentException>(() => _productContext.AddProduct(product));
         }
 
         [Theory]
@@ -53,11 +53,11 @@ namespace BootCamp24_ProductTestXunit
             var product = new Product
             {
                 Name = invalidName,
-                Price = 10,
+                Price = 100,
                 Category = "Electronics"
             };
 
-            Assert.Throws<ArgumentException>(() => _productContext.AddProduct(product));
+            var exception = Assert.Throws<ArgumentException>(() => _productContext.AddProduct(product));
         }
     }
 }
