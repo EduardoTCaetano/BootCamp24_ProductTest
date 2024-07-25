@@ -21,5 +21,8 @@ namespace BootCamp24_ProductTestXunit
             _products.Add(product);
             return product;
         }
+
+        public IReadOnlyList<Product> Products => _products.AsReadOnly();
+
     }
 }

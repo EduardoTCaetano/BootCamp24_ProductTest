@@ -13,15 +13,15 @@ namespace BootCamp24_ProductTestXunit
         }
 
         [Fact]
-        public void When_AddProductIsValid()
+        public void When_AddProductIsValid_ShouldAddProduct()
         {
             var product = new Product { Name = "Product", Price = 100, Category = "Electronics" };
-            var addedProduct = _productContext.AddProduct(product);
+            _productContext.AddProduct(product);
 
-            Assert.NotNull(addedProduct);
-            Assert.Equal("Product", addedProduct.Name);
-            Assert.Equal(100m, addedProduct.Price);
-            Assert.Equal("Electronics", addedProduct.Category);
+            Assert.Contains(_productContext.Products, p =>
+                p.Name == "Product" &&
+                p.Price == 100m &&
+                p.Category == "Electronics");
         }
 
         [Fact]
@@ -29,6 +29,7 @@ namespace BootCamp24_ProductTestXunit
         {
             var product = new Product { Name = "Product", Price = 0, Category = "Electronics" };
             var exception = Assert.Throws<ArgumentException>(() => _productContext.AddProduct(product));
+            Assert.Equal("Price must be greater than zero.", exception.Message);
         }
 
         [Fact]
@@ -36,6 +37,7 @@ namespace BootCamp24_ProductTestXunit
         {
             var product = new Product { Name = "Product", Price = -100, Category = "Electronics" };
             var exception = Assert.Throws<ArgumentException>(() => _productContext.AddProduct(product));
+            Assert.Equal("Price must be greater than zero.", exception.Message);
         }
 
         [Fact]
@@ -43,6 +45,22 @@ namespace BootCamp24_ProductTestXunit
         {
             var product = new Product { Name = "Product", Price = 100, Category = "InvalidCategory" };
             var exception = Assert.Throws<ArgumentException>(() => _productContext.AddProduct(product));
+            Assert.Equal("Invalid category.", exception.Message);
+        }
+
+        [Theory]
+        [InlineData("Electronics")]
+        [InlineData("Books")]
+        [InlineData("Pets")]
+        public void When_AddProductCategoryIsValid_ShouldAddProduct(string validCategory)
+        {
+            var product = new Product { Name = "Product", Price = 100, Category = validCategory };
+            _productContext.AddProduct(product);
+
+            Assert.Contains(_productContext.Products, p =>
+                p.Name == "Product" &&
+                p.Price == 100m &&
+                p.Category == validCategory);
         }
 
         [Theory]
@@ -58,6 +76,7 @@ namespace BootCamp24_ProductTestXunit
             };
 
             var exception = Assert.Throws<ArgumentException>(() => _productContext.AddProduct(product));
+            Assert.Equal("Name is required.", exception.Message);
         }
     }
 }
